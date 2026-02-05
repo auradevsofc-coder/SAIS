@@ -4,10 +4,11 @@ Sistema completo de gestão escolar desenvolvido com React, Node.js e TypeScript
 
 ## 👥 Equipe
 
-- **Dev 1** - Backend Lead
-- **Dev 2** - Frontend Lead  
-- **Dev 3** - Fullstack/Support
-
+- **Isac Ghilardi** - Backend Lead, coordenador do projeto
+- **Ezequiel Francisco** - Frontend Lead  
+- **Emyliu Felipe** - Fullstack/Support
+- **Icaro Mairon** - Database support 
+- **João Guilherme** - Fullstack/Support
 ## 🚀 Tecnologias
 
 ### Backend
@@ -107,11 +108,11 @@ Este projeto é desenvolvido como trabalho acadêmico.
 
 ## 📧 Contato
 
-- Dev 1: email@exemplo.com
-- Dev 2: email@exemplo.com
-- Dev 3: email@exemplo.com
+- isac : isacghilardi@gmail.com
+
 
 ---
 
 Desenvolvido com ❤️ por [AuraDevs]
+
 
