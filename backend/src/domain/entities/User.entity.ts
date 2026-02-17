@@ -116,6 +116,10 @@ private validateMatricula(matricula : string) : void {
     throw new Error('Matricula deve conter 6 digitos');
   }
 }
-//Formatadores 
+//Formatadores
+
+private formatName(nome : string ) : void {
+
+}
 
 }
