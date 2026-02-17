@@ -1,25 +1,13 @@
-﻿import { Routes, Route } from 'react-router-dom'
-import { Toaster } from 'sonner'
-
-function Home() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-primary-600">
-        SAIS Frontend Configurado! 🚀
-      </h1>
-    </div>
-  )
-}
+﻿import { Toaster } from "sonner";
+import { Login } from "./pages/Login";
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-      <Toaster position="top-right" />
+      <Toaster position="top-right" richColors />
+      <Login />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
