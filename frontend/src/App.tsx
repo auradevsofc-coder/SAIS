@@ -1,13 +1,52 @@
-﻿import { Toaster } from "sonner";
-import { Login } from "./pages/Login";
+﻿import { useState, ChangeEvent } from "react";
+import logoSais from "./assets/imagem_sais.png";
+import "./App.css";
 
-function App() {
+export default function App() {
+  const [matricula, setMatricula] = useState("");
+  const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
   return (
-    <>
-      <Toaster position="top-right" richColors />
-      <Login />
-    </>
+    <div className="container">
+      <div className="login-box">
+        <div className="logo-container">
+          <img src={logoSais} alt="Logo SAIS" className="main-logo" />
+        </div>
+        
+        <h2 style={{margin: "10px 0 30px 0", color: "#1e40af", fontSize: "28px"}}>S.A.I.S</h2>
+
+        <input
+          type="text"
+          placeholder="Matrícula / Usuário"
+          value={matricula}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setMatricula(e.target.value)}
+        />
+
+        <div style={{position: "relative", width: "100%"}}>
+          <input
+            type={mostrarSenha ? "text" : "password"}
+            placeholder="Senha"
+            value={senha}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
+          />
+          <button 
+            type="button" 
+            onClick={() => setMostrarSenha(!mostrarSenha)}
+            style={{position: "absolute", right: "12px", top: "18px", background: "none", border: "none", cursor: "pointer", fontSize: "18px"}}
+          >
+            {mostrarSenha ? "🙈" : "👁️"}
+          </button>
+        </div>
+
+        <button className="btn-entrar" onClick={() => alert("Validando...")}>
+          Acessar Sistema
+        </button>
+
+        <div style={{marginTop: "20px", fontSize: "12px"}}>
+          <a href="#" style={{color: "#2563eb", textDecoration: "none"}}>Esqueceu a senha?</a>
+        </div>
+      </div>
+    </div>
   );
 }
-
-export default App;
