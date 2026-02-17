@@ -7,81 +7,58 @@ body, html, #root {
   justify-content: center;
   align-items: center;
   font-family: "Arial", sans-serif;
-  background-image: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80");
-  background-size: cover;
-  background-position: center;
+  background-color: #f3f4f6; /* Fundo cinza claro e limpo */
   overflow: hidden;
 }
 
 .container {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 25px 20px; /* Padding reduzido para não ficar gigante */
+  background: #ffffff; /* Fundo totalmente branco */
+  padding: 30px 25px;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  width: 85%; 
-  max-width: 360px; /* Reduzi um pouco a largura máxima */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Sombra mais leve */
+  width: 90%; 
+  max-width: 360px;
   text-align: center;
-  position: relative;
+  border: 1px solid #e5e7eb; /* Borda sutil */
 }
 
-/* Botões no Topo menores para Mobile */
-.nav-buttons {
-  position: absolute;
-  top: -65px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+.logo-container {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px auto;
 }
 
-.nav-buttons button {
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
-  font-size: 11px; /* Fonte menor */
-  cursor: pointer;
+.main-logo {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
 }
 
-.nav-buttons button:nth-child(1) { background-color: #1e40af; }
-.nav-buttons button:nth-child(2) { background-color: #16a34a; }
-.nav-buttons button:nth-child(3) { background-color: #8b5cf6; }
-
-/* Inputs mais baixos */
 input {
   width: 100%;
-  padding: 10px 12px; /* Diminuí a altura do input */
+  padding: 12px;
   margin: 8px 0;
-  border: 1px solid #ddd;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   box-sizing: border-box;
-  font-size: 14px; /* Fonte padrão mobile */
+  font-size: 15px;
+  background-color: #f9fafb;
 }
 
 .btn-entrar {
-  background-color: #2563eb;
+  background-color: #1e40af;
   color: white;
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   border: none;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   margin-top: 15px;
+  transition: background 0.2s;
 }
 
-/* Ajuste específico para telas de celular pequenas */
-@media (max-width: 400px) {
-  .container {
-    padding: 20px 15px;
-    max-width: 300px; /* Caixa ainda menor em celulares pequenos */
-  }
-  .nav-buttons {
-    top: -95px;
-    flex-wrap: wrap;
-  }
-  h2 { font-size: 20px; }
+.btn-entrar:hover {
+  background-color: #1d4ed8;
 }
