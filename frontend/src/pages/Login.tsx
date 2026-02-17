@@ -1,30 +1,47 @@
-﻿import { useState } from "react";
+﻿import React, { useState } from "react";
 import { toast } from "sonner";
+import "../App.css";
 
 export function Login() {
-  const [email, setEmail] = useState("");
+  const [matricula, setMatricula] = useState("");
+  const [senha, setSenha] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Sucesso!", { description: "Você logou como " + email });
+    if (matricula === "aluno123" && senha === "senha123") {
+      toast.success("Login realizado!", { description: "Bem-vindo, Aluno!" });
+    } else {
+      toast.error("Erro", { description: "Matrícula ou senha inválidos" });
+    }
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#f3f4f6", fontFamily: "sans-serif" }}>
-      <div style={{ backgroundColor: "white", padding: "40px", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textAlign: "center" }}>
-        <h1 style={{ color: "#2563eb", marginBottom: "20px" }}>SAIS - Login</h1>
+    <div className="container">
+      <div className="nav-buttons">
+        <button onClick={() => alert("Módulo Aluno")}>Ver Boletim</button>
+        <button onClick={() => alert("Módulo Professor")}>Dashboard Prof</button>
+        <button onClick={() => alert("Módulo Admin")}>Dashboard Admin</button>
+      </div>
+
+      <div className="login-box">
+        <div className="icon-circle">🎓</div>
+        <h2>S.A.I.S</h2>
+        <p>Entre com suas credenciais institucionais</p>
+
         <form onSubmit={handleLogin}>
-          <input 
-            type="email" 
-            placeholder="Seu e-mail" 
-            style={{ width: "100%", padding: "10px", marginBottom: "15px", borderRadius: "4px", border: "1px solid #ccc" }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+          <input
+            type="text"
+            placeholder="Matrícula"
+            value={matricula}
+            onChange={(e) => setMatricula(e.target.value)}
           />
-          <button type="submit" style={{ width: "100%", padding: "10px", backgroundColor: "#2563eb", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-            Entrar
-          </button>
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+          <button type="submit" className="btn-entrar">Entrar</button>
         </form>
       </div>
     </div>
