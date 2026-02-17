@@ -14,14 +14,11 @@ export default function App() {
           <img src={logoSais} alt="Logo SAIS" className="main-logo" />
         </div>
         
-        <h2 style={{margin: "5px 0", color: "#1e40af"}}>S.A.I.S</h2>
-        <p style={{fontSize: "14px", color: "#666", marginBottom: "20px"}}>
-          Sistema de Apoio e Integração de Saúde
-        </p>
+        <h2 style={{margin: "10px 0 30px 0", color: "#1e40af", fontSize: "28px"}}>S.A.I.S</h2>
 
         <input
           type="text"
-          placeholder="Matrícula"
+          placeholder="Matrícula / Usuário"
           value={matricula}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setMatricula(e.target.value)}
         />
@@ -36,15 +33,19 @@ export default function App() {
           <button 
             type="button" 
             onClick={() => setMostrarSenha(!mostrarSenha)}
-            style={{position: "absolute", right: "12px", top: "18px", background: "none", border: "none", cursor: "pointer"}}
+            style={{position: "absolute", right: "12px", top: "18px", background: "none", border: "none", cursor: "pointer", fontSize: "18px"}}
           >
             {mostrarSenha ? "🙈" : "👁️"}
           </button>
         </div>
 
-        <button className="btn-entrar" onClick={() => alert("Acessando...")}>
+        <button className="btn-entrar" onClick={() => alert("Validando...")}>
           Acessar Sistema
         </button>
+
+        <div style={{marginTop: "20px", fontSize: "12px"}}>
+          <a href="#" style={{color: "#2563eb", textDecoration: "none"}}>Esqueceu a senha?</a>
+        </div>
       </div>
     </div>
   );
