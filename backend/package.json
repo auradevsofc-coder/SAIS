@@ -41,5 +41,6 @@
   },
   "directories": {
     "test": "tests"
-  }
+  },
+  "type": "commonjs"
 }
