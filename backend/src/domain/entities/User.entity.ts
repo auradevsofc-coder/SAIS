@@ -112,7 +112,7 @@ private validateMatricula(matricula : string) : void {
      if (/[^0-9]/.test(matricula)) {
     throw new Error('Matricula deve conter apenas números');
   }
-     if (cleanMatricula.length !== 11) {
+     if (cleanMatricula.length !== 6) {
     throw new Error('Matricula deve conter 6 digitos');
   }
 }
