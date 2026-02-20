@@ -8,45 +8,82 @@ export default function App() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   return (
-    <div className="container">
-      <div className="login-box">
-        <div className="logo-container">
-          <img src={logoSais} alt="Logo SAIS" className="main-logo" />
-        </div>
-        
-        <h2 style={{margin: "10px 0 30px 0", color: "#1e40af", fontSize: "28px"}}>S.A.I.S</h2>
+    <div className="wrapper">
+      <main className="container">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="logo-container">
+            <img src={logoSais} alt="Logo SAIS" className="main-logo" />
+          </div>
+          
+          <h1>S.A.I.S</h1>
+          <p className="subtitulo-login">Sistema de Apoio Institucional</p>
+          
+          <div className="input-group">
+            <label>Matrícula / Usuário</label>
+            <div className="input-box">
+              <input 
+                placeholder="Digite seu usuário" 
+                type="text"
+                value={matricula}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setMatricula(e.target.value)}
+              />
+            </div>
+          </div>
 
-        <input
-          type="text"
-          placeholder="Matrícula / Usuário"
-          value={matricula}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setMatricula(e.target.value)}
-        />
+          <div className="input-group">
+            <label>Senha</label>
+            <div className="input-box">
+              <input 
+                placeholder="••••••••" 
+                type={mostrarSenha ? "text" : "password"}
+                value={senha}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
+              />
+              <button 
+                type="button" 
+                className="eye-btn"
+                onClick={() => setMostrarSenha(!mostrarSenha)}
+              >
+                {mostrarSenha ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
 
-        <div style={{position: "relative", width: "100%"}}>
-          <input
-            type={mostrarSenha ? "text" : "password"}
-            placeholder="Senha"
-            value={senha}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
-          />
-          <button 
-            type="button" 
-            onClick={() => setMostrarSenha(!mostrarSenha)}
-            style={{position: "absolute", right: "12px", top: "18px", background: "none", border: "none", cursor: "pointer", fontSize: "18px"}}
-          >
-            {mostrarSenha ? "🙈" : "👁️"}
+          {/* Container corrigido para alinhar as extremidades */}
+          <div className="bottom-options">
+            <label className="remember">
+              <input type="checkbox" /> 
+              <span>Lembrar-me</span>
+            </label>
+            <a href="#" className="forgot-link">Esqueceu a senha?</a>
+          </div>
+
+          <button type="submit" className="login-btn">
+            Acessar Sistema
           </button>
-        </div>
 
-        <button className="btn-entrar" onClick={() => alert("Validando...")}>
-          Acessar Sistema
-        </button>
-
-        <div style={{marginTop: "20px", fontSize: "12px"}}>
-          <a href="#" style={{color: "#2563eb", textDecoration: "none"}}>Esqueceu a senha?</a>
-        </div>
-      </div>
+          <div className="register-link">
+            <p>Não tem acesso? <a href="#">Solicitar Credenciais</a></p>
+          </div>
+          
+          <hr className="divider" />
+          
+          <div className="footer-links">
+            <p>Ao fazer login, você concorda com os</p>
+            <div className="policy-row">
+              <a href="#">Termos de Uso</a> 
+              <span>e</span>
+              <a href="#">Política de Privacidade</a>
+            </div>
+          </div>
+        </form>
+      </main>
     </div>
   );
 }
+/* ... código anterior ... */
+          <div className="register-link">
+            <span>Não tem acesso? </span>
+            <a href="#">Solicitar Credenciais</a>
+          </div>
+/* ... restante do código ... */
