@@ -50,8 +50,12 @@
     "globals": "^16.5.0",
     "nodemon": "^3.1.11",
     "postcss": "^8.5.6",
+<<<<<<< HEAD
     "tailwindcss": "^4.1.18",
     "ts-node-dev": "^2.0.0",
+=======
+    "tailwindcss": "^4.2.0",
+>>>>>>> 4533ee5abb8890c2ab54199b5f3e0d58bfe18371
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.14.0",
     "vite": "^7.2.4"
