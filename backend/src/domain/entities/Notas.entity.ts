@@ -40,6 +40,18 @@ export class Nota {
     this._updatedAt = new Date();
   }
 
+  public toJSON() {
+  return {
+    id: this.id,
+    studentId: this._studentId,
+    subjectId: this._subjectId,
+    valor: this._valor,
+    periodo: this._periodo,
+    createdAt: this.createdAt,
+    updatedAt: this._updatedAt,
+  };
+}
+
   public atualizarNota(novoValor: number): void {
     const valorSchema = z.number().min(0).max(10);
     valorSchema.parse(novoValor);

@@ -70,6 +70,20 @@ export class Estudante {
     return nome.trim().replace(/\s+/g, " ");
   }
 
+public toJSON() {
+  return {
+    id: this.id,
+    nome: this._nome,
+    cpf: this._cpf,
+    dataNascimento: this._dataNascimento,
+    nomeResponsavel: this._nomeResponsavel,
+    telefoneResponsavel: this._telefoneResponsavel,
+    status: this._status,
+    createdAt: this.createdAt,
+    updatedAt: this._updatedAt,
+  };
+}
+
   public atualizarDados(dados: Partial<Pick<EstudanteProps, "nome" | "nomeResponsavel" | "telefoneResponsavel">>): void {
     if (dados.nome) {
       this._nome = this.formatName(dados.nome);

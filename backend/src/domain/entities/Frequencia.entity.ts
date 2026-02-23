@@ -46,6 +46,18 @@ export class Frequencia {
     this._updatedAt = new Date();
   }
 
+  public toJSON() {
+  return {
+    id: this.id,
+    studentId: this._studentId,
+    subjectId: this._subjectId,
+    data: this._data,
+    status: this._status,
+    createdAt: this.createdAt,
+    updatedAt: this._updatedAt,
+  };
+}
+
   public alterarStatus(novoStatus: FrequenciaStatus): void {
     this._status = novoStatus;
     this._updatedAt = new Date();

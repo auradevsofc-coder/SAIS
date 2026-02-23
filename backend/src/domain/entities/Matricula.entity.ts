@@ -55,6 +55,19 @@ export class Matricula {
     this._updatedAt = new Date();
   }
 
+  public toJSON() {
+  return {
+    id: this.id,
+    studentId: this._studentId,
+    classId: this._classId,
+    status: this._status,
+    matriculadoEm: this._matriculadoEm,
+    concluidoEm: this._concluidoEm,
+    createdAt: this.createdAt,
+    updatedAt: this._updatedAt,
+  };
+}
+
   public concluir(): void {
     if (this._status !== MatriculaStatus.ATIVA) {
       throw new Error("Apenas matrículas ativas podem ser concluídas");

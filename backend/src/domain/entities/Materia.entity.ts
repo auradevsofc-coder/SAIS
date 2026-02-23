@@ -38,6 +38,17 @@ export class Materia {
     this._updatedAt = new Date();
   }
 
+public toJSON() {
+  return {
+    id: this.id,
+    nome: this._nome,
+    classId: this._classId, // útil para saber a qual turma pertence
+    cargaHoraria: this._cargaHoraria,
+    createdAt: this.createdAt,
+    updatedAt: this._updatedAt,
+  };
+}
+
   public atualizarDados(dados: Partial<Pick<MateriasProps, "nome" | "cargaHoraria">>): void {
     if (dados.nome) {
       this._nome = dados.nome.trim().replace(/\s+/g, " ");
