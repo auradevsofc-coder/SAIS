@@ -1,4 +1,7 @@
 import { email, string } from "zod";
+import {z} from "zod";
+import { randomUUID } from "crypto";
+
 
 export enum UserRole {
     ADMIN = 'admin',
@@ -19,7 +22,7 @@ export class User {
 
     private _id: string;
     private _nome: string;
-    private _email: string;
+    private _email: string
     private _senha: string;
     private _Cpf: string;
     private _Matricula: number;
