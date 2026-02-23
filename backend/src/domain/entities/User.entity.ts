@@ -14,6 +14,17 @@ export enum UserStatus {
   PENDENTE = "pendente",
 }
 
+export enum Shift {
+  MANHÃ = "manhã",
+}
+
+export enum AttendanceStatus {
+  PRESENTE = "presente",
+  AUSENTE = "ausente",
+  ATRASADO = "atrasado",
+}
+
+// Schema do Zod para validação dos dados de entrada
 const userSchema = z.object({
   nome: z
     .string()
@@ -22,15 +33,13 @@ const userSchema = z.object({
     .regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/, "Nome deve conter apenas letras e espaços"),
   email: z
     .string()
-    .email("E-mail inválido")
+    //.email("E-mail inválido")
     .min(5, "E-mail muito curto")
     .max(254, "E-mail muito longo"),
   senha: z
     .string()
-    .min(6, "Senha deve ter pelo menos 6 caracteres")
-    .max(15, "Senha deve ter no máximo 15 caracteres")
-    .regex(/[A-Z]/, "Senha deve conter pelo menos uma letra maiúscula")
-    .regex(/[0-9]/, "Senha deve conter pelo menos um número"),
+    .length(6, "Senha deve ter 6 dígitos")
+    .regex(/^\d+$/, "Senha deve conter apenas números"),
   cpf: z
     .string()
     .length(11, "CPF deve ter 11 dígitos")
@@ -95,7 +104,10 @@ export class User {
   private normalizeEmail(email: string): string {
     return email.trim().toLowerCase();
   }
-
+  private formatCpf(Cpf: string): string {
+    return Cpf.trim().replace(/^\d+$/, "");
+  }
+  // Métodos de negócio
   public ativar(): void {
     if (this._status === UserStatus.ATIVO) throw new Error("Usuário já está ativo");
     this._status = UserStatus.ATIVO;
