@@ -1,15 +1,183 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js"   // mantenha o provider tradicional
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // ignorar esse erro.
+}
 
+// ========== ENUMS ==========
+enum Role {
+  ADMIN
+  PROFESSOR
+  ALUNO
+}
+
+enum Turno {
+  MANHA
+  TARDE
+  NOITE
+}
+
+enum ClassStatus {
+  ATIVA
+  ENCERRADA
+  CANCELADA
+}
+
+enum EstudanteStatus {
+  ATIVO
+  INATIVO
+  TRANSFERIDO
+}
+
+enum FrequenciaStatus {
+  PRESENTE
+  AUSENTE
+  ATRASADO
+  JUSTIFICADO
+}
+
+enum ProfessorStatus {
+  ATIVO
+  INATIVO
+  AFASTADO
+}
+
+enum StatusMatricula {
+  ATIVO
+  TRANCADO
+  CONCLUIDO
+}
+
+enum UserStatus {
+  ATIVO
+  INATIVO
+  BANIDO
+  PENDENTE
+}
+
+// ========== MODELS ==========
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String     @id @default(cuid())
+  nome            String
+  email           String     @unique
+  senha           String
+  cpf             String     @unique
+  matricula       String     @unique
+  role            Role       @default(PROFESSOR)
+  status          UserStatus @default(PENDENTE)
+  ultimoLogin     DateTime?
+  tentativasLogin Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  professor       Professor? 
 
   @@map("users")
+}
+
+model Professor {
+  id       String          @id @default(cuid())
+  userId   String          @unique
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nome     String
+  status   ProfessorStatus @default(ATIVO)
+  materias Materia[]
+  aulas    Aula[]
+
+  @@map("professores")
+}
+
+model Estudante {
+  id          String          @id @default(cuid())
+  nome        String
+  matricula   String          @unique
+  classeId    String
+  classe      Classe          @relation(fields: [classeId], references: [id])
+  status      EstudanteStatus @default(ATIVO)
+  notas       Nota[]
+  frequencias Frequencia[]
+  matriculas  Matricula[]
+
+  @@map("estudantes")
+}
+
+model Classe {
+  id         String      @id @default(cuid())
+  nome       String
+  ano        Int
+  turno      Turno
+  maxAlunos  Int         @default(30)
+  status     ClassStatus @default(ATIVA)
+  estudantes Estudante[]
+  materias   Materia[]
+  matriculas Matricula[]
+
+  @@map("classes")
+}
+
+model Materia {
+  id          String    @id @default(cuid())
+  nome        String
+  professorId String
+  professor   Professor @relation(fields: [professorId], references: [id])
+  classes     Classe[]
+  notas       Nota[]
+  aulas       Aula[]
+
+  @@map("materias")
+}
+
+model Nota {
+  id          String    @id @default(cuid())
+  valor       Float
+  estudanteId String
+  estudante   Estudante @relation(fields: [estudanteId], references: [id])
+  materiaId   String
+  materia     Materia   @relation(fields: [materiaId], references: [id])
+  bimestre    Int // 1 a 4
+  createdAt   DateTime  @default(now())
+
+  @@unique([estudanteId, materiaId, bimestre])
+  @@map("notas")
+}
+
+model Aula {
+  id          String       @id @default(cuid())
+  data        DateTime
+  conteudo    String
+  materiaId   String
+  materia     Materia      @relation(fields: [materiaId], references: [id])
+  professorId String
+  professor   Professor    @relation(fields: [professorId], references: [id])
+  frequencias Frequencia[]
+
+  @@map("aulas")
+}
+
+model Frequencia {
+  id          String           @id @default(cuid())
+  status      FrequenciaStatus
+  data        DateTime
+  estudanteId String
+  estudante   Estudante        @relation(fields: [estudanteId], references: [id])
+  aulaId      String
+  aula        Aula             @relation(fields: [aulaId], references: [id])
+
+  @@unique([aulaId, estudanteId])
+  @@map("frequencias")
+}
+
+model Matricula {
+  id          String          @id @default(cuid())
+  estudanteId String
+  estudante   Estudante       @relation(fields: [estudanteId], references: [id])
+  classeId    String
+  classe      Classe          @relation(fields: [classeId], references: [id])
+  ano         Int
+  status      StatusMatricula @default(ATIVO)
+
+  @@unique([estudanteId, classeId, ano])
+  @@map("matriculas")
 }

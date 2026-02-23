@@ -33,27 +33,14 @@ export class Professor {
   private _status: ProfessorStatus;
   private _updatedAt: Date;
 
-  get userId(): string {
-    return this._userId;
-  }
-  get nome(): string {
-    return this._nome;
-  }
-  get disciplinaPrincipal(): string | undefined {
-    return this._disciplinaPrincipal;
-  }
-  get telefone(): string | undefined {
-    return this._telefone;
-  }
-  get especializacao(): string | undefined {
-    return this._especializacao;
-  }
-  get status(): ProfessorStatus {
-    return this._status;
-  }
-  get updatedAt(): Date {
-    return this._updatedAt;
-  }
+  // Getters
+  get userId(): string { return this._userId; }
+  get nome(): string { return this._nome; }
+  get disciplinaPrincipal(): string | undefined { return this._disciplinaPrincipal; }
+  get telefone(): string | undefined { return this._telefone; }
+  get especializacao(): string | undefined { return this._especializacao; }
+  get status(): ProfessorStatus { return this._status; }
+  get updatedAt(): Date { return this._updatedAt; }
 
   constructor(props: ProfessorProps) {
     const validated = createProfessorSchema.parse(props);
@@ -74,6 +61,22 @@ export class Professor {
     return nome.trim().replace(/\s+/g, " ");
   }
 
+  // ===== MÉTODO toJSON =====
+  public toJSON() {
+    return {
+      id: this.id,
+      nome: this._nome,
+      disciplinaPrincipal: this._disciplinaPrincipal,
+      telefone: this._telefone,
+      especializacao: this._especializacao,
+      status: this._status,
+      createdAt: this.createdAt,
+      updatedAt: this._updatedAt,
+    };
+  }
+  // ========================
+
+  // Métodos de negócio
   public atualizarDados(dados: Partial<Pick<ProfessorProps, "nome" | "disciplinaPrincipal" | "telefone" | "especializacao">>): void {
     if (dados.nome) {
       this._nome = this.formatName(dados.nome);

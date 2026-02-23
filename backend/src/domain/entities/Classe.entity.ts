@@ -59,6 +59,20 @@ export class Class {
     this._status = ClassStatus.ATIVA;
   }
 
+public toJSON() {
+  return {
+    id: this.id,
+    nome: this._nome,
+    ano: this._ano,
+    turno: this._turno,
+    maxAlunos: this._maxAlunos,
+    professorId: this._professorId, // pode ser útil mostrar quem é o professor
+    status: this._status,
+    createdAt: this.createdAt,
+    updatedAt: this._updatedAt,
+  };
+}
+
   // Método para atualizar dados básicos (nome e maxAlunos)
   public atualizarDados(dados: Partial<Pick<ClassProps, "nome" | "maxAlunos">>): void {
     if (dados.nome) {

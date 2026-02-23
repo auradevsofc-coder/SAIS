@@ -2,52 +2,45 @@ import { z } from "zod";
 import { randomUUID } from "crypto";
 
 export enum UserRole {
-  ADMIN = "admin",
-  PROFESSOR = "professor",
-  ALUNO = "aluno",
+  ADMIN = "ADMIN",
+  PROFESSOR = "PROFESSOR",
+  ALUNO = "ALUNO",
 }
 
 export enum UserStatus {
-  ATIVO = "ativo",
-  INATIVO = "inativo",
-  BANIDO = "banido",
-  PENDENTE = "pendente",
+  ATIVO = "ATIVO",
+  INATIVO = "INATIVO",
+  BANIDO = "BANIDO",
+  PENDENTE = "PENDENTE",
 }
 
-const userSchema = z.object({
-  nome: z
-    .string()
-    .min(3, "Nome deve ter pelo menos 3 caracteres")
-    .max(150, "Nome deve ter no máximo 150 caracteres")
-    .regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/, "Nome deve conter apenas letras e espaços"),
-  email: z
-    .string()
-    .email("E-mail inválido")
-    .min(5, "E-mail muito curto")
-    .max(254, "E-mail muito longo"),
-  senha: z
-    .string()
-    .min(6, "Senha deve ter pelo menos 6 caracteres")
-    .max(15, "Senha deve ter no máximo 15 caracteres")
-    .regex(/[A-Z]/, "Senha deve conter pelo menos uma letra maiúscula")
-    .regex(/[0-9]/, "Senha deve conter pelo menos um número"),
-  cpf: z
-    .string()
-    .length(11, "CPF deve ter 11 dígitos")
-    .regex(/^\d+$/, "CPF deve conter apenas números"),
-  matricula: z
-    .string()
-    .length(6, "Matrícula deve ter 6 dígitos")
-    .regex(/^\d+$/, "Matrícula deve conter apenas números"),
+const createUserSchema = z.object({
+  nome: z.string().min(3).max(150).regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/),
+  email: z.string().email().min(5).max(254),
+  senha: z.string().min(6).max(15).regex(/[A-Z]/).regex(/[0-9]/),
+  cpf: z.string().length(11).regex(/^\d+$/),
+  matricula: z.string().length(6).regex(/^\d+$/),
   role: z.nativeEnum(UserRole).default(UserRole.ALUNO),
 });
 
-type UserProps = z.infer<typeof userSchema>;
+type CreateUserProps = z.infer<typeof createUserSchema>;
+
+export type UserProps = {
+  id: string;
+  nome: string;
+  email: string;
+  senha: string;
+  cpf: string;
+  matricula: string;
+  role: UserRole;
+  status: UserStatus;
+  ultimoLogin: Date | null;
+  tentativasLogin: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export class User {
-  public readonly id: string;
-  public readonly createdAt: Date;
-
   private _nome: string;
   private _email: string;
   private _senha: string;
@@ -59,6 +52,10 @@ export class User {
   private _tentativasLogin: number;
   private _updatedAt: Date;
 
+  public readonly id: string;
+  public readonly createdAt: Date;
+
+  // Getters
   get nome(): string { return this._nome; }
   get email(): string { return this._email; }
   get senha(): string { return this._senha; }
@@ -70,22 +67,38 @@ export class User {
   get tentativasLogin(): number { return this._tentativasLogin; }
   get updatedAt(): Date { return this._updatedAt; }
 
-  constructor(props: UserProps) {
-    const validated = userSchema.parse(props);
+  constructor(props: CreateUserProps & Partial<Omit<UserProps, keyof CreateUserProps>>) {
+    if (!props.id) {
 
-    this._nome = this.formatName(validated.nome);
-    this._email = this.normalizeEmail(validated.email);
-    this._cpf = validated.cpf;
-    this._matricula = validated.matricula;
-    this._senha = validated.senha; // já deve vir hasheada
-    this._role = validated.role;
+      const validated = createUserSchema.parse(props);
+      this._nome = this.formatName(validated.nome);
+      this._email = this.normalizeEmail(validated.email);
+      this._cpf = validated.cpf;
+      this._matricula = validated.matricula;
+      this._senha = validated.senha;
+      this._role = validated.role;
 
-    this.id = randomUUID();
-    this.createdAt = new Date();
-    this._updatedAt = new Date();
-    this._status = UserStatus.PENDENTE;
-    this._ultimoLogin = null;
-    this._tentativasLogin = 0;
+      this.id = randomUUID();
+      this.createdAt = new Date();
+      this._updatedAt = new Date();
+      this._status = UserStatus.PENDENTE;
+      this._ultimoLogin = null;
+      this._tentativasLogin = 0;
+    } else {
+
+      this.id = props.id;
+      this._nome = props.nome!;
+      this._email = props.email!;
+      this._senha = props.senha!;
+      this._cpf = props.cpf!;
+      this._matricula = props.matricula!;
+      this._role = props.role!;
+      this._status = props.status!;
+      this._ultimoLogin = props.ultimoLogin ?? null;
+      this._tentativasLogin = props.tentativasLogin ?? 0;
+      this.createdAt = props.createdAt!;
+      this._updatedAt = props.updatedAt!;
+    }
   }
 
   private formatName(nome: string): string {
@@ -96,6 +109,27 @@ export class User {
     return email.trim().toLowerCase();
   }
 
+  public isAdmin(): boolean {
+    return this._role === UserRole.ADMIN;
+  }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      nome: this._nome,
+      email: this._email,
+      cpf: this._cpf,
+      matricula: this._matricula,
+      role: this._role,
+      status: this._status,
+      ultimoLogin: this._ultimoLogin,
+      tentativasLogin: this._tentativasLogin,
+      createdAt: this.createdAt,
+      updatedAt: this._updatedAt,
+    };
+  }
+
+  // Métodos de negócio
   public ativar(): void {
     if (this._status === UserStatus.ATIVO) throw new Error("Usuário já está ativo");
     this._status = UserStatus.ATIVO;
@@ -130,7 +164,7 @@ export class User {
   public alterarSenha(novaSenha: string): void {
     const senhaSchema = z.string().min(6).max(15).regex(/[A-Z]/).regex(/[0-9]/);
     senhaSchema.parse(novaSenha);
-    this._senha = novaSenha; // deve vir hasheada
+    this._senha = novaSenha;
     this._updatedAt = new Date();
   }
 
