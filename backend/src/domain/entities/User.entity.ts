@@ -1,5 +1,3 @@
-// não sei se isso aqui vai funcionar, mas vamos tentar
-
 import { z } from "zod";
 import { randomUUID } from "crypto";
 
@@ -16,16 +14,12 @@ export enum UserStatus {
   PENDENTE = "pendente",
 }
 
-// Schema do Zod para validação dos dados de entrada
 const userSchema = z.object({
   nome: z
     .string()
     .min(3, "Nome deve ter pelo menos 3 caracteres")
     .max(150, "Nome deve ter no máximo 150 caracteres")
-    .regex(
-      /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/,
-      "Nome deve conter apenas letras e espaços",
-    ),
+    .regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/, "Nome deve conter apenas letras e espaços"),
   email: z
     .string()
     .email("E-mail inválido")
@@ -48,71 +42,44 @@ const userSchema = z.object({
   role: z.nativeEnum(UserRole).default(UserRole.ALUNO),
 });
 
-// Tipo inferido do schema (esturutura)
 type UserProps = z.infer<typeof userSchema>;
 
 export class User {
-  // Propriedades públicas readonly (imutáveis) (readonly para garantir que não sejam alteradas diretamente)
   public readonly id: string;
   public readonly createdAt: Date;
 
-  // Propriedades privadas com getters
   private _nome: string;
   private _email: string;
   private _senha: string;
   private _cpf: string;
-  private _matricula: number;
+  private _matricula: string;
   private _role: UserRole;
   private _status: UserStatus;
   private _ultimoLogin: Date | null;
   private _tentativasLogin: number;
   private _updatedAt: Date;
 
-  // Getters
-  get nome(): string {
-    return this._nome;
-  }
-  get email(): string {
-    return this._email;
-  }
-  get senha(): string {
-    return this._senha;
-  }
-  get cpf(): string {
-    return this._cpf;
-  }
-  get matricula(): number {
-    return this._matricula;
-  }
-  get role(): UserRole {
-    return this._role;
-  }
-  get status(): UserStatus {
-    return this._status;
-  }
-  get ultimoLogin(): Date | null {
-    return this._ultimoLogin;
-  }
-  get tentativasLogin(): number {
-    return this._tentativasLogin;
-  }
-  get updatedAt(): Date {
-    return this._updatedAt;
-  }
+  get nome(): string { return this._nome; }
+  get email(): string { return this._email; }
+  get senha(): string { return this._senha; }
+  get cpf(): string { return this._cpf; }
+  get matricula(): string { return this._matricula; }
+  get role(): UserRole { return this._role; }
+  get status(): UserStatus { return this._status; }
+  get ultimoLogin(): Date | null { return this._ultimoLogin; }
+  get tentativasLogin(): number { return this._tentativasLogin; }
+  get updatedAt(): Date { return this._updatedAt; }
 
   constructor(props: UserProps) {
-    // 1. Validar os dados com Zod
     const validated = userSchema.parse(props);
 
-    // 2. Formatações adicionais
     this._nome = this.formatName(validated.nome);
     this._email = this.normalizeEmail(validated.email);
-    this._cpf = validated.cpf; // já sem pontuação
-    this._matricula = parseInt(validated.matricula, 10);
-    this._senha = validated.senha; // (a senha fornecida pelo usuário já deve ter passado por um processo de hashing antes de chegar aqui)
+    this._cpf = validated.cpf;
+    this._matricula = validated.matricula;
+    this._senha = validated.senha; // já deve vir hasheada
     this._role = validated.role;
 
-    // 3. Propriedades internas
     this.id = randomUUID();
     this.createdAt = new Date();
     this._updatedAt = new Date();
@@ -121,7 +88,6 @@ export class User {
     this._tentativasLogin = 0;
   }
 
-  // Formatações
   private formatName(nome: string): string {
     return nome.trim().replace(/\s+/g, " ");
   }
@@ -130,19 +96,14 @@ export class User {
     return email.trim().toLowerCase();
   }
 
-  // Métodos de negócio
   public ativar(): void {
-    if (this._status === UserStatus.ATIVO) {
-      throw new Error("Usuário já está ativo");
-    }
+    if (this._status === UserStatus.ATIVO) throw new Error("Usuário já está ativo");
     this._status = UserStatus.ATIVO;
     this._updatedAt = new Date();
   }
 
   public desativar(): void {
-    if (this._status === UserStatus.INATIVO) {
-      throw new Error("Usuário já está inativo");
-    }
+    if (this._status === UserStatus.INATIVO) throw new Error("Usuário já está inativo");
     this._status = UserStatus.INATIVO;
     this._updatedAt = new Date();
   }
@@ -167,10 +128,9 @@ export class User {
   }
 
   public alterarSenha(novaSenha: string): void {
-    // Reutiliza a validação de senha do Zod
     const senhaSchema = z.string().min(6).max(15).regex(/[A-Z]/).regex(/[0-9]/);
     senhaSchema.parse(novaSenha);
-    this._senha = novaSenha;
+    this._senha = novaSenha; // deve vir hasheada
     this._updatedAt = new Date();
   }
 
