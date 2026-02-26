@@ -2,6 +2,7 @@
 import { toast } from 'sonner';
 import '../App.css';
 import logoSais from '../assets/imagem_sais.png';
+import { Input } from '../components/Input';
 
 export function Login() {
   const [matricula, setMatricula] = useState('');
@@ -28,23 +29,18 @@ export function Login() {
           <h1>S.A.I.S</h1>
           <p className="subtitulo-login">Sistema de Apoio Institucional</p>
 
-          <div className="input-group">
-            <label>Matrícula / Usuário</label>
-            <div className="input-box">
-              <input
-                placeholder="Digite seu usuário"
-                type="text"
-                value={matricula}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setMatricula(e.target.value)}
-              />
-            </div>
-          </div>
+          <Input
+          label="Matricula"
+          value={matricula}
+          onChange={(e) => setMatricula(e.target.value)}
+          placeholder="Digite sua Matricula"
+          />
 
           <div className="input-group">
             <label>Senha</label>
             <div className="input-box">
               <input
-                placeholder="••••••••"
+                placeholder="Digite sua senha"
                 type={mostrarSenha ? 'text' : 'password'}
                 value={senha}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
@@ -59,7 +55,6 @@ export function Login() {
             </div>
           </div>
 
-          {/* Container corrigido para alinhar as extremidades */}
           <div className="bottom-options">
             <label className="remember">
               <input type="checkbox" />
@@ -95,6 +90,3 @@ export function Login() {
     </div>
   );
 }
-/* ... código anterior ... */
-
-/* ... restante do código ... */
