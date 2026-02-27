@@ -1,13 +1,14 @@
-﻿import React, { useState, ChangeEvent } from 'react';
+﻿import React, { useState } from 'react';
 import { toast } from 'sonner';
 import '../App.css';
 import logoSais from '../assets/imagem_sais.png';
 import { Input } from '../components/Input';
+import { Button } from '../components/Button';
+import { PasswordInput} from '../components/PasswordInput';
 
 export function Login() {
   const [matricula, setMatricula] = useState('');
   const [senha, setSenha] = useState('');
-  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,24 +37,10 @@ export function Login() {
           placeholder="Digite sua Matricula"
           />
 
-          <div className="input-group">
-            <label>Senha</label>
-            <div className="input-box">
-              <input
-                placeholder="Digite sua senha"
-                type={mostrarSenha ? 'text' : 'password'}
-                value={senha}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
-              />
-              <button
-                type="button"
-                className="eye-btn"
-                onClick={() => setMostrarSenha(!mostrarSenha)}
-              >
-                {mostrarSenha ? '🙈' : '👁️'}
-              </button>
-            </div>
-          </div>
+          <PasswordInput
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          />
 
           <div className="bottom-options">
             <label className="remember">
@@ -65,9 +52,7 @@ export function Login() {
             </a>
           </div>
 
-          <button type="submit" className="login-btn">
-            Acessar Sistema
-          </button>
+          <Button type="submit">Acessar Sistema</Button>
 
           <div className="register-link">
             <p>
