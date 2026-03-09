@@ -1,5 +1,6 @@
 ﻿import React, { useState, ChangeEvent } from 'react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import logoSais from '../assets/imagem_sais.png';
 
@@ -7,11 +8,16 @@ export function Login() {
   const [matricula, setMatricula] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (matricula === 'aluno123' && senha === 'senha123') {
       toast.success('Login realizado!', { description: 'Bem-vindo, Aluno!' });
+      navigate('/boletim');
+    } else if (matricula === 'admin' && senha === 'admin123') {
+      toast.success('Login admin realizado!', { description: 'Bem-vindo, Admin!' });
+      navigate('/boletim');
     } else {
       toast.error('Erro', { description: 'Matrícula ou senha inválidos' });
     }
@@ -20,7 +26,7 @@ export function Login() {
   return (
     <div className="wrapper">
       <main className="container">
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleLogin}>
           <div className="logo-container">
             <img src={logoSais} alt="Logo SAIS" className="main-logo" />
           </div>
@@ -95,6 +101,3 @@ export function Login() {
     </div>
   );
 }
-/* ... código anterior ... */
-
-/* ... restante do código ... */
