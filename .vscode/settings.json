@@ -8,5 +8,6 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
-  }
+  },
+  "prisma.pinToPrisma6": true
 }
