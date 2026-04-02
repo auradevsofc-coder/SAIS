@@ -1,14 +1,16 @@
-﻿import React, { useState, ChangeEvent } from 'react';
+﻿import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Check, XCircle, X } from 'lucide-react';
 import logoSais from '../assets/imagem_sais.png';
+import { Input } from '../components/Input';
+import { Button } from '../components/Button';
+import { PasswordInput} from '../components/PasswordInput';
 
 export function Login() {
   const navigate = useNavigate();
   const [matricula, setMatricula] = useState('');
   const [senha, setSenha] = useState('');
-  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const customToast = (titulo: string, desc: string, tipo: 'sucesso' | 'erro') => {
     toast.custom((t) => (
